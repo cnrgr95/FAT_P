@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('language', 'en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ _('app_title') }}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="{{ url_for('dashboard') }}" class="logo-link">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" class="sidebar-logo">
+                </a>
+            </div>
+            
+            <ul class="list-unstyled components">
+                <li class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <a href="{{ url_for('dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span data-text="dashboard">{{ _('dashboard') }}</span>
+                    </a>
+                </li>
+                <li class="{% if request.endpoint in ['costs', 'add_cost'] %}active{% endif %}">
+                    <a href="{{ url_for('costs') }}">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span data-text="costs">{{ _('costs') }}</span>
+                    </a>
+                </li>
+                <li class="{% if request.endpoint in ['tour_programs', 'add_tour_program'] %}active{% endif %}">
+                    <a href="{{ url_for('tour_programs') }}">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span data-text="tour_program">{{ _('tour_program') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#settingsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-cog"></i>
+                        <span data-text="settings">{{ _('settings') }}</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="settingsSubmenu">
+                        <li class="{% if request.endpoint == 'settings' %}active{% endif %}">
+                            <a href="{{ url_for('settings') }}">
+                                <i class="fas fa-sliders-h"></i>
+                                <span data-text="system_settings">{{ _('system_settings') }}</span>
+                            </a>
+                        </li>
+                        <li class="{% if request.endpoint == 'settings_users' %}active{% endif %}">
+                            <a href="{{ url_for('settings_users') }}">
+                                <i class="fas fa-users"></i>
+                                <span data-text="users">{{ _('users') }}</span>
+                            </a>
+                        </li>
+                        <li class="{% if request.endpoint == 'settings_language' %}active{% endif %}">
+                            <a href="{{ url_for('settings_language') }}">
+                                <i class="fas fa-language"></i>
+                                <span data-text="language">{{ _('language') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Page Content -->
+        <div id="content">
+        <!-- Enhanced Creative Topbar -->
+        <nav class="navbar navbar-expand-lg topbar">
+            <div class="container-fluid">
+                <!-- Left Side -->
+                <div class="d-flex align-items-center">
+                    <button type="button" id="sidebarCollapse" class="btn btn-primary btn-sm me-3" title="Toggle Sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="d-none d-md-block">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url_for('dashboard') }}" class="text-decoration-none">
+                                    <i class="fas fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {% block breadcrumb %}{{ _('dashboard') }}{% endblock %}
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                
+                <!-- Center - Search Bar -->
+                <div class="d-none d-lg-flex flex-grow-1 justify-content-center mx-4">
+                    <div class="search-container position-relative" style="max-width: 400px; width: 100%;">
+                        <input type="text" class="form-control form-control-sm search-input" placeholder="{{ _('search') }}..." id="global-search" data-placeholder="{{ _('search') }}">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-results" id="search-results"></div>
+                    </div>
+                </div>
+                
+                <!-- Right Side -->
+                <div class="navbar-nav d-flex align-items-center">
+                    <!-- Language Selector -->
+                    <div class="nav-item me-2">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-globe me-1"></i>
+                                <span class="language-text">
+                                    {% if session.get('language', 'en') == 'en' %}EN{% else %}TR{% endif %}
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end language-dropdown">
+                                <li class="dropdown-header">
+                                    <i class="fas fa-language me-2"></i>
+                                    <span data-text="language">{{ _('language') }}</span>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item language-item {% if session.get('language', 'en') == 'en' %}active{% endif %}" href="#" data-language="en">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-flag-usa me-3 text-primary"></i>
+                                            <div>
+                                                <div class="fw-medium">English</div>
+                                                <small class="text-muted">EN</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item language-item {% if session.get('language', 'en') == 'tr' %}active{% endif %}" href="#" data-language="tr">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-flag me-3 text-danger"></i>
+                                            <div>
+                                                <div class="fw-medium">Türkçe</div>
+                                                <small class="text-muted">TR</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Toggle -->
+                    <div class="nav-item me-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="theme-toggle" title="Toggle Dark/Light Mode">
+                            <i class="fas fa-moon" id="theme-icon"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Fullscreen Toggle -->
+                    <div class="nav-item me-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="fullscreen-toggle" title="Toggle Fullscreen (F11)">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="nav-item me-2">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                    3
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
+                                <li class="dropdown-header d-flex justify-content-between align-items-center">
+                                    <span data-text="notifications">{{ _('notifications') }}</span>
+                                    <small class="text-muted">3 <span data-text="new">{{ _('new') }}</span></small>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item notification-item" href="#">
+                                        <div class="d-flex">
+                                            <div class="notification-icon bg-primary">
+                                                <i class="fas fa-plus text-white"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="fw-medium" data-text="new_cost_added">{{ _('new_cost_added') }}</div>
+                                                <small class="text-muted">2 <span data-text="minutes_ago">{{ _('minutes_ago') }}</span></small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item notification-item" href="#">
+                                        <div class="d-flex">
+                                            <div class="notification-icon bg-success">
+                                                <i class="fas fa-plane text-white"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="fw-medium" data-text="tour_updated">{{ _('tour_updated') }}</div>
+                                                <small class="text-muted">1 <span data-text="hour_ago">{{ _('hour_ago') }}</span></small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-center" href="#" data-text="view_all_notifications">{{ _('view_all_notifications') }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <div class="nav-item">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar me-2">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-info d-none d-md-block">
+                                    <div class="user-name">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                                    <small class="user-role text-muted" data-text="user">{{ current_user.position or _('user') }}</small>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                                <li class="dropdown-header">
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar-large me-3">
+                                            <i class="fas fa-user-circle"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                                            <small class="text-muted">{{ current_user.email }}</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user me-2"></i><span data-text="profile">{{ _('profile') }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cog me-2"></i><span data-text="settings">{{ _('settings') }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-question-circle me-2"></i><span data-text="help">{{ _('help') }}</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                        <i class="fas fa-sign-out-alt me-2"></i><span data-text="logout">{{ _('logout') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+            
+            <!-- Main Content -->
+            <div class="container-fluid">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

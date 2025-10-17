@@ -1,0 +1,122 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ _('language') }} - {{ _('app_title') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title">
+                <i class="fas fa-language"></i>
+                {{ _('language') }}
+            </h1>
+            <a href="{{ url_for('settings') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {{ _('back') }}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-globe"></i>
+                    Select Language
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="mb-4">
+                        <label for="language" class="form-label">{{ _('language') }}</label>
+                        <select class="form-select" id="language" name="language" onchange="changeLanguage(this.value)">
+                            <option value="en" {% if current_lang == 'en' %}selected{% endif %}>
+                                <i class="fas fa-flag-usa"></i> English
+                            </option>
+                            <option value="tr" {% if current_lang == 'tr' %}selected{% endif %}>
+                                <i class="fas fa-flag"></i> Türkçe
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Note:</strong> Language changes will be applied immediately and affect the entire application interface.
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> {{ _('save') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle"></i>
+                    Language Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Available Languages:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> English (Default)</li>
+                            <li><i class="fas fa-check text-success"></i> Türkçe</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Current Language:</h6>
+                        <p class="mb-0">
+                            <span class="badge bg-primary fs-6">
+                                {% if current_lang == 'en' %}
+                                    <i class="fas fa-flag-usa"></i> English
+                                {% elif current_lang == 'tr' %}
+                                    <i class="fas fa-flag"></i> Türkçe
+                                {% endif %}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changeLanguage(langCode) {
+    // Send AJAX request to change language
+    fetch('/api/change-language', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            language: langCode
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Reload page to apply language changes
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
+{% endblock %}

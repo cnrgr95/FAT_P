@@ -1,0 +1,108 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ _('add_tour') }} - {{ _('app_title') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title">
+                <i class="fas fa-plus"></i>
+                {{ _('add_tour') }}
+            </h1>
+            <a href="{{ url_for('tour_programs') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> {{ _('back') }}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">{{ _('name') }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="destination" class="form-label">{{ _('destination') }}</label>
+                            <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter destination">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">{{ _('start_date') }} <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="end_date" class="form-label">{{ _('end_date') }} <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="total_cost" class="form-label">{{ _('total_cost') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="total_cost" name="total_cost" step="0.01" min="0" placeholder="0.00">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">{{ _('description') }}</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter tour program description..."></textarea>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('tour_programs') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> {{ _('cancel') }}
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> {{ _('save') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Set today's date as default for start date
+document.getElementById('start_date').valueAsDate = new Date();
+
+// Set end date to tomorrow by default
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+document.getElementById('end_date').valueAsDate = tomorrow;
+
+// Validate that end date is after start date
+document.getElementById('end_date').addEventListener('change', function() {
+    const startDate = new Date(document.getElementById('start_date').value);
+    const endDate = new Date(this.value);
+    
+    if (endDate <= startDate) {
+        alert('End date must be after start date');
+        this.value = '';
+    }
+});
+
+document.getElementById('start_date').addEventListener('change', function() {
+    const startDate = new Date(this.value);
+    const endDate = new Date(document.getElementById('end_date').value);
+    
+    if (endDate <= startDate) {
+        document.getElementById('end_date').value = '';
+    }
+});
+</script>
+{% endblock %}

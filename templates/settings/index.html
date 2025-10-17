@@ -1,0 +1,114 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ _('settings') }} - {{ _('app_title') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="page-title">
+            <i class="fas fa-cog"></i>
+            {{ _('settings') }}
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-sliders-h fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">{{ _('system_settings') }}</h5>
+                <p class="card-text text-muted">Configure system-wide settings and preferences.</p>
+                <a href="#" class="btn btn-primary">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x text-success mb-3"></i>
+                <h5 class="card-title">{{ _('users') }}</h5>
+                <p class="card-text text-muted">Manage user accounts and permissions.</p>
+                <a href="{{ url_for('settings_users') }}" class="btn btn-success">
+                    <i class="fas fa-arrow-right"></i> Manage Users
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-language fa-3x text-info mb-3"></i>
+                <h5 class="card-title">{{ _('language') }}</h5>
+                <p class="card-text text-muted">Change system language and localization.</p>
+                <a href="{{ url_for('settings_language') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-right"></i> Change Language
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle"></i>
+                    System Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Application Name:</strong></td>
+                                <td>{{ _('app_title') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Version:</strong></td>
+                                <td>1.0.0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Current User:</strong></td>
+                                <td>{{ current_user.first_name }} {{ current_user.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Department:</strong></td>
+                                <td>{{ current_user.department }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Position:</strong></td>
+                                <td>{{ current_user.position }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Login:</strong></td>
+                                <td>{{ current_user.last_login.strftime('%Y-%m-%d %H:%M') if current_user.last_login else 'Never' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Account Created:</strong></td>
+                                <td>{{ current_user.created_at.strftime('%Y-%m-%d') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if current_user.is_active else 'danger' }}">
+                                        {{ _('active') if current_user.is_active else _('inactive') }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
