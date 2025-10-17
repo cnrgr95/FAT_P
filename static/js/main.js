@@ -350,7 +350,31 @@ function updateLanguageUI(language) {
     };
     $('.breadcrumb-item.active').text(breadcrumbTexts[language] || breadcrumbTexts['en']);
     
+    // Update user dropdown text (only if no position is set)
+    const userTexts = {
+        'en': 'User',
+        'tr': 'Kullanıcı'
+    };
+    $('.user-role span[data-text="user"]').text(userTexts[language] || userTexts['en']);
     
+    // Update notification texts
+    const notificationTexts = {
+        'en': {
+            'notifications': 'Notifications',
+            'new': 'New',
+            'view_all_notifications': 'View All Notifications'
+        },
+        'tr': {
+            'notifications': 'Bildirimler',
+            'new': 'Yeni',
+            'view_all_notifications': 'Tüm Bildirimleri Görüntüle'
+        }
+    };
+    
+    const texts = notificationTexts[language] || notificationTexts['en'];
+    $('.dropdown-header span[data-text="notifications"]').text(texts.notifications);
+    $('.dropdown-header small span[data-text="new"]').text(texts.new);
+    $('[data-text="view_all_notifications"]').text(texts.view_all_notifications);
     
     // Update page content (basic elements)
     updatePageContent(language);

@@ -467,6 +467,152 @@ body {
     font-size: var(--font-size-lg);
 }
 
+/* User Profile Link */
+.user-profile-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.user-profile-link:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.user-profile-link:focus {
+    box-shadow: 0 0 0 2px var(--primary-200);
+    outline: none;
+}
+
+/* User Info Styles */
+.user-info {
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 0.125rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* User Avatar Improvements */
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-100);
+    border-radius: 50%;
+    color: var(--primary-600);
+    font-size: var(--font-size-lg);
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.user-profile-link:hover .user-avatar {
+    background: var(--primary-200);
+    color: var(--primary-700);
+    border-color: var(--primary-300);
+    transform: scale(1.05);
+}
+
+.user-dropdown {
+    min-width: 240px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-primary);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.user-dropdown .dropdown-header {
+    padding: 1rem 1.25rem;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--border-primary);
+    margin-bottom: 0.25rem;
+}
+
+.user-dropdown .dropdown-item {
+    padding: 0.75rem 1.25rem;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    font-size: var(--font-size-sm);
+}
+
+.user-dropdown .dropdown-item:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    padding-left: 1.5rem;
+}
+
+.user-dropdown .dropdown-item.text-danger:hover {
+    background: var(--error-50);
+    color: var(--error-700);
+}
+
+.user-dropdown .dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Dark theme adjustments for user info */
+[data-theme="dark"] .user-profile-link:hover {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] .user-profile-link:focus {
+    box-shadow: 0 0 0 2px var(--primary-600);
+}
+
+[data-theme="dark"] .user-avatar {
+    background: var(--primary-900);
+    color: var(--primary-300);
+}
+
+[data-theme="dark"] .user-profile-link:hover .user-avatar {
+    background: var(--primary-800);
+    color: var(--primary-200);
+    border-color: var(--primary-600);
+}
+
+[data-theme="dark"] .user-dropdown {
+    background: var(--card-bg);
+    border-color: var(--border-primary);
+}
+
+[data-theme="dark"] .user-dropdown .dropdown-header {
+    background: var(--gray-800);
+    border-color: var(--border-primary);
+}
+
+[data-theme="dark"] .user-dropdown .dropdown-item:hover {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] .user-dropdown .dropdown-item.text-danger:hover {
+    background: var(--error-900);
+    color: var(--error-200);
+}
+
 .user-avatar-large {
     width: 48px;
     height: 48px;
@@ -477,12 +623,6 @@ body {
     border-radius: 50%;
     color: var(--primary-600);
     font-size: var(--font-size-2xl);
-}
-
-.user-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: var(--font-size-sm);
 }
 
 .user-role {
