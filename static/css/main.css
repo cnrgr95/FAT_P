@@ -453,51 +453,6 @@ body {
     pointer-events: none;
 }
 
-.search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--border-primary);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    z-index: 1000;
-    max-height: 300px;
-    overflow-y: auto;
-    display: none;
-}
-
-.search-results.show {
-    display: block;
-}
-
-.search-result-item {
-    color: var(--text-primary);
-    transition: background-color 0.2s ease;
-    border-bottom: 1px solid var(--border-primary);
-}
-
-.search-result-item:hover {
-    background: var(--hover-bg);
-    color: var(--text-primary);
-}
-
-.search-result-item:last-child {
-    border-bottom: none;
-}
-
-.search-result-icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary-100);
-    border-radius: 50%;
-    color: var(--primary-600);
-    font-size: var(--font-size-sm);
-}
 
 /* User Avatar */
 .user-avatar {
@@ -1198,31 +1153,26 @@ body {
     font-weight: 600;
 }
 
-.language-dropdown .language-item.active .text-primary,
-.language-dropdown .language-item.active .text-danger {
-    opacity: 1;
-}
-
-.language-dropdown .language-item .text-primary,
-.language-dropdown .language-item .text-danger {
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-}
-
-.language-dropdown .language-item:hover .text-primary,
-.language-dropdown .language-item:hover .text-danger {
-    opacity: 1;
-}
-
 /* Language button hover effect */
 #languageDropdown:hover {
     background: var(--primary-50);
     border-color: var(--primary-300);
     color: var(--primary-700);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 #languageDropdown:hover .language-text {
     color: var(--primary-700);
+}
+
+#languageDropdown:hover .fas.fa-globe {
+    color: var(--primary-700);
+    transform: scale(1.1);
+}
+
+#languageDropdown .fas.fa-globe {
+    transition: all 0.2s ease;
 }
 
 /* Dark theme adjustments for language selector */
@@ -1244,8 +1194,108 @@ body {
     background: var(--primary-900);
     border-color: var(--primary-600);
     color: var(--primary-200);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] #languageDropdown:hover .language-text {
     color: var(--primary-200);
+}
+
+[data-theme="dark"] #languageDropdown:hover .fas.fa-globe {
+    color: var(--primary-200);
+    transform: scale(1.1);
+}
+
+/* Recent Activities Styles */
+.recent-table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.recent-table thead th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    background: var(--gray-50);
+}
+
+.recent-item {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.recent-item:hover {
+    background: var(--hover-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recent-item:last-child {
+    border-bottom: none;
+}
+
+.cost-icon, .tour-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.cost-icon {
+    background: var(--primary-100);
+    color: var(--primary-600);
+}
+
+.tour-icon {
+    background: var(--success-100);
+    color: var(--success-600);
+}
+
+.recent-item:hover .cost-icon {
+    background: var(--primary-200);
+    color: var(--primary-700);
+    transform: scale(1.1);
+}
+
+.recent-item:hover .tour-icon {
+    background: var(--success-200);
+    color: var(--success-700);
+    transform: scale(1.1);
+}
+
+/* Dark theme adjustments for recent activities */
+[data-theme="dark"] .recent-table thead th {
+    background: var(--gray-800);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .recent-item:hover {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] .cost-icon {
+    background: var(--primary-900);
+    color: var(--primary-300);
+}
+
+[data-theme="dark"] .tour-icon {
+    background: var(--success-900);
+    color: var(--success-300);
+}
+
+[data-theme="dark"] .recent-item:hover .cost-icon {
+    background: var(--primary-800);
+    color: var(--primary-200);
+}
+
+[data-theme="dark"] .recent-item:hover .tour-icon {
+    background: var(--success-800);
+    color: var(--success-200);
 }

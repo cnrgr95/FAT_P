@@ -117,46 +117,60 @@
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="card-title mb-0 d-flex align-items-center">
                         <i class="fas fa-receipt me-2 text-primary"></i>
-                        {{ _('recent_costs') }}
+                        <span data-text="recent_costs">{{ _('recent_costs') }}</span>
                     </h5>
-                    <span class="badge bg-primary">{{ recent_costs|length }}</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary">{{ recent_costs|length }}</span>
+                        <a href="{{ url_for('costs') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>
+                            <span data-text="view">{{ _('view') }}</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     {% if recent_costs %}
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
-                                <thead>
+                                <thead class="table-light">
                                     <tr>
-                                        <th class="border-0">{{ _('name') }}</th>
-                                        <th class="border-0">{{ _('amount') }}</th>
-                                        <th class="border-0">{{ _('date') }}</th>
-                                        <th class="border-0">{{ _('category') }}</th>
+                                        <th class="border-0 py-3 px-4">
+                                            <span data-text="name">{{ _('name') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4 text-end">
+                                            <span data-text="amount">{{ _('amount') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4 text-center">
+                                            <span data-text="date">{{ _('date') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4 text-center">
+                                            <span data-text="category">{{ _('category') }}</span>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for cost in recent_costs %}
-                                    <tr>
-                                        <td>
+                                    <tr class="recent-item">
+                                        <td class="py-3 px-4">
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                                    <i class="fas fa-receipt text-primary"></i>
+                                                <div class="cost-icon me-3">
+                                                    <i class="fas fa-receipt"></i>
                                                 </div>
-                                                <div>
-                                                    <div class="fw-medium">{{ cost.name }}</div>
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-medium text-dark">{{ cost.name }}</div>
                                                     {% if cost.description %}
-                                                        <div class="text-muted small">{{ cost.description[:30] }}{% if cost.description|length > 30 %}...{% endif %}</div>
+                                                        <div class="text-muted small mt-1">{{ cost.description[:40] }}{% if cost.description|length > 40 %}...{% endif %}</div>
                                                     {% endif %}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
-                                            <span class="fw-bold text-primary">${{ "%.2f"|format(cost.amount) }}</span>
+                                        <td class="py-3 px-4 text-end">
+                                            <span class="fw-bold text-success fs-6">${{ "%.2f"|format(cost.amount) }}</span>
                                         </td>
-                                        <td>
-                                            <span class="text-muted">{{ cost.date.strftime('%d.%m.%Y') }}</span>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="text-muted small">{{ cost.date.strftime('%m/%d/%Y') if cost.date else '-' }}</span>
                                         </td>
-                                        <td>
-                                            <span class="badge bg-secondary">{{ cost.category or 'N/A' }}</span>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="badge bg-light text-dark border">{{ cost.category or '-' }}</span>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -189,46 +203,60 @@
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="card-title mb-0 d-flex align-items-center">
                         <i class="fas fa-map-marked-alt me-2 text-success"></i>
-                        {{ _('recent_tours') }}
+                        <span data-text="recent_tours">{{ _('recent_tours') }}</span>
                     </h5>
-                    <span class="badge bg-success">{{ recent_tours|length }}</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success">{{ recent_tours|length }}</span>
+                        <a href="{{ url_for('tour_programs') }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-eye me-1"></i>
+                            <span data-text="view">{{ _('view') }}</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     {% if recent_tours %}
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
-                                <thead>
+                                <thead class="table-light">
                                     <tr>
-                                        <th class="border-0">{{ _('name') }}</th>
-                                        <th class="border-0">{{ _('destination') }}</th>
-                                        <th class="border-0">{{ _('start_date') }}</th>
-                                        <th class="border-0">{{ _('cost') }}</th>
+                                        <th class="border-0 py-3 px-4">
+                                            <span data-text="name">{{ _('name') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4">
+                                            <span data-text="destination">{{ _('destination') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4 text-center">
+                                            <span data-text="start_date">{{ _('start_date') }}</span>
+                                        </th>
+                                        <th class="border-0 py-3 px-4 text-end">
+                                            <span data-text="cost">{{ _('cost') }}</span>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for tour in recent_tours %}
-                                    <tr>
-                                        <td>
+                                    <tr class="recent-item">
+                                        <td class="py-3 px-4">
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
-                                                    <i class="fas fa-plane text-success"></i>
+                                                <div class="tour-icon me-3">
+                                                    <i class="fas fa-plane"></i>
                                                 </div>
-                                                <div>
-                                                    <div class="fw-medium">{{ tour.name }}</div>
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-medium text-dark">{{ tour.name }}</div>
                                                     {% if tour.description %}
-                                                        <div class="text-muted small">{{ tour.description[:30] }}{% if tour.description|length > 30 %}...{% endif %}</div>
+                                                        <div class="text-muted small mt-1">{{ tour.description[:40] }}{% if tour.description|length > 40 %}...{% endif %}</div>
                                                     {% endif %}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
-                                            <span class="fw-medium">{{ tour.destination }}</span>
+                                        <td class="py-3 px-4">
+                                            <span class="fw-medium text-dark">{{ tour.destination or '-' }}</span>
                                         </td>
-                                        <td>
-                                            <span class="text-muted">{{ tour.start_date.strftime('%d.%m.%Y') }}</span>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="text-muted small">{{ tour.start_date.strftime('%m/%d/%Y') if tour.start_date else '-' }}</span>
                                         </td>
-                                        <td>
-                                            <span class="fw-bold text-success">${{ "%.2f"|format(tour.total_cost) }}</span>
+                                        <td class="py-3 px-4 text-end">
+                                            <span class="fw-bold text-info fs-6">${{ "%.2f"|format(tour.total_cost) if tour.total_cost else '0.00' }}</span>
                                         </td>
                                     </tr>
                                     {% endfor %}

@@ -105,22 +105,13 @@
                     </nav>
                 </div>
                 
-                <!-- Center - Search Bar -->
-                <div class="d-none d-lg-flex flex-grow-1 justify-content-center mx-4">
-                    <div class="search-container position-relative" style="max-width: 400px; width: 100%;">
-                        <input type="text" class="form-control form-control-sm search-input" placeholder="{{ _('search') }}..." id="global-search" data-placeholder="{{ _('search') }}">
-                        <i class="fas fa-search search-icon"></i>
-                        <div class="search-results" id="search-results"></div>
-                    </div>
-                </div>
-                
                 <!-- Right Side -->
                 <div class="navbar-nav d-flex align-items-center">
                     <!-- Language Selector -->
                     <div class="nav-item me-2">
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-globe me-1"></i>
+                            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-globe me-2"></i>
                                 <span class="language-text">
                                     {% if session.get('language', 'en') == 'en' %}EN{% else %}TR{% endif %}
                                 </span>
@@ -131,28 +122,26 @@
                                     <span data-text="language">{{ _('language') }}</span>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item language-item {% if session.get('language', 'en') == 'en' %}active{% endif %}" href="#" data-language="en">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-flag-usa me-3 text-primary"></i>
-                                            <div>
-                                                <div class="fw-medium">English</div>
-                                                <small class="text-muted">EN</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item language-item {% if session.get('language', 'en') == 'tr' %}active{% endif %}" href="#" data-language="tr">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-flag me-3 text-danger"></i>
-                                            <div>
-                                                <div class="fw-medium">Türkçe</div>
-                                                <small class="text-muted">TR</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                    <li>
+                        <a class="dropdown-item language-item {% if session.get('language', 'en') == 'en' %}active{% endif %}" href="#" data-language="en">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <div class="fw-medium">English</div>
+                                    <small class="text-muted">EN</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item language-item {% if session.get('language', 'en') == 'tr' %}active{% endif %}" href="#" data-language="tr">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <div class="fw-medium">Türkçe</div>
+                                    <small class="text-muted">TR</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
                             </ul>
                         </div>
                     </div>

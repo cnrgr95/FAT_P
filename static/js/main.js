@@ -22,7 +22,6 @@ function initializeApp() {
     initializeTheme();
     initializeFullscreen();
     initializeLanguageSelector();
-    initializeGlobalSearch();
     initializeAnimations();
     initializeKeyboardShortcuts();
     initializePerformanceOptimizations();
@@ -293,86 +292,6 @@ function initializeLanguageSelector() {
     });
 }
 
-// Global Search Functionality
-function initializeGlobalSearch() {
-    const searchInput = $('#global-search');
-    const searchResults = $('#search-results');
-    
-    let searchTimeout;
-    
-    searchInput.on('input', function() {
-        const query = $(this).val().trim();
-        
-        clearTimeout(searchTimeout);
-        
-        if (query.length < 2) {
-            searchResults.removeClass('show').empty();
-            return;
-        }
-        
-        searchTimeout = setTimeout(() => {
-            performSearch(query);
-        }, 300);
-    });
-    
-    // Hide search results when clicking outside
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.search-container').length) {
-            searchResults.removeClass('show');
-        }
-    });
-    
-    // Show search results on focus
-    searchInput.on('focus', function() {
-        if ($(this).val().trim().length >= 2) {
-            searchResults.addClass('show');
-        }
-    });
-}
-
-function performSearch(query) {
-    const searchResults = $('#search-results');
-    
-    // Mock search results - replace with actual API call
-    const mockResults = [
-        { type: 'cost', title: 'Office Supplies', description: 'Recent cost entry', url: '/costs' },
-        { type: 'tour', title: 'Istanbul Tour', description: 'Tour program', url: '/tour-programs' },
-        { type: 'user', title: 'John Doe', description: 'User profile', url: '/users' }
-    ];
-    
-    const filteredResults = mockResults.filter(item => 
-        item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    if (filteredResults.length === 0) {
-        searchResults.html(`
-            <div class="p-3 text-center text-muted">
-                <i class="fas fa-search mb-2"></i>
-                <div>No results found for "${query}"</div>
-            </div>
-        `);
-    } else {
-        const resultsHtml = filteredResults.map(result => `
-            <a href="${result.url}" class="search-result-item d-block p-3 text-decoration-none">
-                <div class="d-flex align-items-center">
-                    <div class="search-result-icon me-3">
-                        <i class="fas fa-${result.type === 'cost' ? 'receipt' : result.type === 'tour' ? 'plane' : 'user'}"></i>
-                    </div>
-                    <div>
-                        <div class="fw-medium text-primary">${result.title}</div>
-                        <small class="text-muted">${result.description}</small>
-                    </div>
-                </div>
-            </a>
-        `).join('');
-        
-        searchResults.html(resultsHtml);
-    }
-    
-    searchResults.addClass('show');
-}
-
 function changeLanguage(language) {
     if (!language || !['en', 'tr'].includes(language)) {
         return; // Silent fail
@@ -431,12 +350,6 @@ function updateLanguageUI(language) {
     };
     $('.breadcrumb-item.active').text(breadcrumbTexts[language] || breadcrumbTexts['en']);
     
-    // Update search placeholder
-    const searchPlaceholders = {
-        'en': 'Search...',
-        'tr': 'Ara...'
-    };
-    $('#global-search').attr('placeholder', searchPlaceholders[language] || searchPlaceholders['en']);
     
     
     // Update page content (basic elements)
@@ -480,7 +393,14 @@ function updatePageContent(language) {
             'minutes_ago': 'minutes ago',
             'hour_ago': 'hour ago',
             'view_all_notifications': 'View All Notifications',
-            'user': 'User'
+            'user': 'User',
+            'name': 'Name',
+            'amount': 'Amount',
+            'date': 'Date',
+            'category': 'Category',
+            'destination': 'Destination',
+            'start_date': 'Start Date',
+            'cost': 'Cost'
         },
         'tr': {
             'dashboard': 'Kontrol Paneli',
@@ -516,7 +436,14 @@ function updatePageContent(language) {
             'minutes_ago': 'dakika önce',
             'hour_ago': 'saat önce',
             'view_all_notifications': 'Tüm Bildirimleri Görüntüle',
-            'user': 'Kullanıcı'
+            'user': 'Kullanıcı',
+            'name': 'Ad',
+            'amount': 'Tutar',
+            'date': 'Tarih',
+            'category': 'Kategori',
+            'destination': 'Hedef',
+            'start_date': 'Başlangıç Tarihi',
+            'cost': 'Maliyet'
         }
     };
     
